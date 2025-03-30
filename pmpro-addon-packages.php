@@ -434,7 +434,12 @@ add_filter( 'pmpro_paypal_express_return_url_parameters', 'pmproap_pmpro_paypal_
 if ( ! function_exists( 'pmproap_pmpro_updated_order_paypal' ) ) {
 	function pmproap_pmpro_updated_order_paypal( $order ) {
 
-		if ( ( $order->status == 'success' ) && ( $order->gateway == 'paypalstandard' ) && ( strpos( $order->notes, 'Addon Package:' ) !== false ) ) {
+        $gateways = array(
+            'paypalstandard',
+            'ccbill'
+        );
+
+		if ( ( $order->status == 'success' ) && in_array( $order->gateway, $gateways ) && ( strpos( $order->notes, 'Addon Package:' ) !== false ) ) {
 
 			preg_match( '/Addon Package:(.*)\(#(\d+)\)/', $order->notes, $matches );
 			$pmproap_ap = $matches[2];
